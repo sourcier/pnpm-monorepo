@@ -77,7 +77,7 @@ module.exports = {
 ## Workspace config
 
 ```sh
-echo "packages:\n  - 'apps/*'\n  - 'packages/*'" > pnpm-workspaces.yaml
+echo "packages:\n  - 'apps/*'\n  - 'packages/*'" > pnpm-workspace.yaml
 mkdir apps packages
 touch apps/.gitkeep packages/.gitkeep
 ```
