@@ -118,7 +118,6 @@ touch vite.config.ts
 Update the vite.config.ts file,
 
 ```js
-//vite.config.ts
 import { defineConfig } from 'vite';
 import { resolve } from 'path';
 import dts from 'vite-plugin-dts';
@@ -139,4 +138,46 @@ Update package.json
  "main": "./dist/common.js",
  "types": "./dist/main.d.ts",
 }
+```
+
+## Create a web app
+
+```sh
+cd apps
+pnpm create vite web-app --template react-ts
+cd ../
+pnpm install
+npm pkg set scripts.app="pnpm --filter web-app"
+```
+
+Install the common package as a dependency in our web app by updating the web-app package.json.
+
+```js
+"dependencies": {
+ "common": "workspace:*",
+ ...,
+ }
+```
+
+- Run `pnpm install` to link packages
+- Run `pnpm common build` so that the common package can be found by the web-app server
+
+Update App.tsx
+
+```tsx
+import { isBlank } from 'common';
+import './App.css';
+
+const App = () => {
+  return (
+    <>
+      <p>undefined isBlank - {isBlank(undefined) ? 'true' : 'false'}</p>
+      <p>false isBlank - {isBlank(false) ? 'true' : 'false'}</p>
+      <p>true isBlank - {isBlank(true) ? 'true' : 'false'}</p>
+      <p>Empty object isBlank - {isBlank({}) ? 'true' : 'false'}</p>
+    </>
+  );
+};
+
+export default App;
 ```
