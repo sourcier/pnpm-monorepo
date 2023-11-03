@@ -81,3 +81,62 @@ echo "packages:\n  - 'apps/*'\n  - 'packages/*'" > pnpm-workspaces.yaml
 mkdir apps packages
 touch apps/.gitkeep packages/.gitkeep
 ```
+
+## Create a library package
+
+```sh
+cd packages
+pnpm create vite common --template vanilla-ts
+cd ../
+pnpm install
+npm pkg set scripts.common="pnpm --filter common"
+```
+
+Update main.ts file
+
+```ts
+export const isEmpty = (data: any) => data === null || data === undefined;
+
+export const isObject = (data: any) => data && typeof data === 'object';
+
+export const isBlank = (data: any) =>
+  isEmpty(data) ||
+  (Array.isArray(data) && data.length === 0) ||
+  (isObject(data) && Object.keys(data).length === 0) ||
+  (typeof data === 'string' && data.trim().length === 0);
+```
+
+Update config to build package in library mode
+
+```sh
+cd packages/common
+rm -rf src/style.css src/counter.ts src/typescript.svg index.html public
+pnpm add -D vite-plugin-dts
+touch vite.config.ts
+```
+
+Update the vite.config.ts file,
+
+```js
+//vite.config.ts
+import { defineConfig } from 'vite';
+import { resolve } from 'path';
+import dts from 'vite-plugin-dts';
+
+// https://vitejs.dev/config/
+export default defineConfig({
+  build: { lib: { entry: resolve(__dirname, 'src/main.ts'), formats: ['es'] } },
+  resolve: { alias: { src: resolve('src/') } },
+  plugins: [dts()],
+});
+```
+
+Update package.json
+
+```js
+{
+ ...,
+ "main": "./dist/common.js",
+ "types": "./dist/main.d.ts",
+}
+```
