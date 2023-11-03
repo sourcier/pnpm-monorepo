@@ -181,3 +181,10 @@ const App = () => {
 
 export default App;
 ```
+
+## Dev mode
+
+```
+pnpm common build --watch
+pnpm web-app dev
+```
