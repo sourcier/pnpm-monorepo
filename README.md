@@ -73,3 +73,11 @@ module.exports = {
   pnpm pkg set scripts.prepare="husky install"
   echo '{\n\t"**/*.{js,ts,tsx}": [\n\t\t"eslint --fix"\n\t],\n\t"**/*": "prettier --write --ignore-unknown"\n}' > .lintstagedrc
 ```
+
+## Workspace config
+
+```sh
+echo "packages:\n  - 'apps/*'\n  - 'packages/*'" > pnpm-workspaces.yaml
+mkdir apps packages
+touch apps/.gitkeep packages/.gitkeep
+```
